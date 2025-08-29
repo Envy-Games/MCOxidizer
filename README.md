@@ -1,12 +1,15 @@
-
-Installation information
+MCOxidizer Installation Instructions
 =======
 
-This template repository can be directly cloned to get you started with a new
+
+Neoforge Template Installation information
+=======
+
+The Neoforge Version 21.1.203 for Minecraft Version 1.21.1 template repository used to create this mod can be directly cloned to get you started with a new
 mod. Simply create a new repository cloned from this one, by following the
 instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+Once you have your clone, simply open the repository in the IDE of your choice. We recommend IntelliJ IDEA Community.
 
 If at any point you are missing libraries in your IDE, or you've run into problems you can
 run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 

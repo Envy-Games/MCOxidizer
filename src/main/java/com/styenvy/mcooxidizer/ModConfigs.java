@@ -9,7 +9,7 @@ public final class ModConfigs {
 
     public static final ModConfigSpec.IntValue ENERGY_PER_TICK =
             B.defineInRange("energyPerTick", 20, 1, 100000);
-    //Set to 0 0 and then inside of runs>client>config> mcooxidizer-common.toml set energyPerTick = 0 
+    //Set to ENERGY_PER_TICK 0 0 and then inside of runs>client>config> mcooxidizer-common.toml set energyPerTick = 0
     public static final ModConfigSpec.IntValue PROCESS_TICKS =
             B.defineInRange("processTicks", 80, 1, 12000);
     public static final ModConfigSpec.IntValue BUFFER_FE =

@@ -1,1 +1,3 @@
-{ "parent": "mcooxidizer:block/oxidizer" }
+{
+  "parent": "mcooxidizer:block/oxidizer"
+}

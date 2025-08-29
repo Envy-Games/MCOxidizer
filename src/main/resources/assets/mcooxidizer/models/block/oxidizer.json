@@ -1,4 +1,12 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": { "all": "minecraft:block/copper_block" }
+  "parent": "block/cube",
+  "textures": {
+    "north": "mcooxidizer:block/oxidizer_front",
+    "south": "mcooxidizer:block/oxidizer_back",
+    "east":  "mcooxidizer:block/oxidizer_sides",
+    "west":  "mcooxidizer:block/oxidizer_sides",
+    "up":    "mcooxidizer:block/oxidizer_top",
+    "down":  "mcooxidizer:block/oxidizer_bottom",
+    "particle": "mcooxidizer:block/oxidizer_sides"
+  }
 }

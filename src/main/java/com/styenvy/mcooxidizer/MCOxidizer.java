@@ -12,5 +12,6 @@ public final class MCOxidizer {
         ModConfigs.register(modBus);
         ModClient.register(modBus);
         modBus.addListener(ModCreative::addToTabs);
+        modBus.addListener(ModCapabilities::register);
     }
 }
