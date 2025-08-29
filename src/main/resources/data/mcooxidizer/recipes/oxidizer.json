@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["CLC","RAR","CCC"],
+  "key": {
+    "C": { "item": "minecraft:copper_block" },
+    "L": { "item": "minecraft:lightning_rod" },
+    "R": { "item": "minecraft:redstone" },
+    "A": { "item": "minecraft:amethyst_shard" }
+  },
+  "result": { "item": "mcooxidizer:oxidizer" }
+}
