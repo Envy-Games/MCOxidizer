@@ -28,8 +28,10 @@ public final class OxidizerMenu extends AbstractContainerMenu {
     public static OxidizerMenu fromNetwork(int id, Inventory inv, FriendlyByteBuf buf) {
         var pos = buf.readBlockPos();
         var be = (OxidizerBlockEntity) inv.player.level().getBlockEntity(pos);
-        assert be != null;
-        return new OxidizerMenu(id, inv, be, be.getData());
+        if (be == null) throw new IllegalStateException("Oxidizer BE missing at " + pos);
+
+        // Use a fresh client-side data container; server will populate it via addDataSlots()
+        return new OxidizerMenu(id, inv, be, new net.minecraft.world.inventory.SimpleContainerData(4));
     }
 
     public OxidizerMenu(int id, Inventory playerInv, OxidizerBlockEntity be, ContainerData data) {
@@ -70,7 +72,6 @@ public final class OxidizerMenu extends AbstractContainerMenu {
                 if (!this.moveItemStackTo(stack, MACHINE_SLOTS, playerEndEx, true)) return ItemStack.EMPTY;
                 slot.onQuickCraft(stack, ret);
             } else {
-                // Player -> inputs (chip → wax → copper)
                 if (!this.moveItemStackTo(stack, IDX_INPUT_CHIP, IDX_INPUT_CHIP + 1, false))
                     if (!this.moveItemStackTo(stack, IDX_INPUT_WAX, IDX_INPUT_WAX + 1, false))
                         if (!this.moveItemStackTo(stack, IDX_INPUT_COPPER, IDX_INPUT_COPPER + 1, false))
