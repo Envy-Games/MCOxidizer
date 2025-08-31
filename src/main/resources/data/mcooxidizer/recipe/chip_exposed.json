@@ -6,5 +6,5 @@
     "C": { "item": "minecraft:copper_ingot" },
     "E": { "item": "minecraft:exposed_copper" }
   },
-  "result": { "item": "mcooxidizer:chip_exposed", "count": 1 }
+  "result": { "id": "mcooxidizer:chip_exposed", "count": 1 }
 }

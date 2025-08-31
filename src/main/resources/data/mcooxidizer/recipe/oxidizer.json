@@ -7,5 +7,5 @@
     "R": { "item": "minecraft:redstone" },
     "A": { "item": "minecraft:amethyst_shard" }
   },
-  "result": { "item": "mcooxidizer:oxidizer" }
+  "result": { "id": "mcooxidizer:oxidizer" }
 }

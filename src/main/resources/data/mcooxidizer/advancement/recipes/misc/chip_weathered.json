@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_weathered_copper_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["minecraft:weathered_copper"] }] }
+    }
+  },
+  "requirements": [["has_weathered_copper_block"]],
+  "rewards": { "recipes": ["mcooxidizer:chip_weathered"] }
+}

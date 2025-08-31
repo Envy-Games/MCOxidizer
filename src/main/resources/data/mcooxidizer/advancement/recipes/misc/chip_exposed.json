@@ -1,0 +1,11 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_exposed_copper_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": { "items": [{ "items": ["minecraft:exposed_copper"] }] }
+    }
+  },
+  "requirements": [["has_exposed_copper_block"]],
+  "rewards": { "recipes": ["mcooxidizer:chip_exposed"] }
+}
