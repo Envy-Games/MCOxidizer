@@ -1,12 +1,13 @@
 package com.styenvy.mcooxidizer;
 
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
 
+@Mod(value = MCOxidizer.MOD_ID, dist = Dist.CLIENT)
 public final class ModClient {
-    private ModClient() {}
-
-    public static void register(IEventBus modBus) {
+    public ModClient(IEventBus modBus) {
         modBus.addListener(ModClient::onRegisterScreens);
     }
 

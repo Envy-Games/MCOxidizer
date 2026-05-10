@@ -17,11 +17,13 @@ public final class OxidizerMenu extends AbstractContainerMenu {
     public static final int IDX_INPUT_WAX    = 2; // (68,46)
     public static final int IDX_OUTPUT       = 3; // (135,46)
 
-    private static final int MACHINE_SLOTS = 4;
+    public static final int MACHINE_SLOTS = 4;
 
     private static final int PLAYER_INV_ROWS = 3, PLAYER_INV_COLS = 9;
-    private static final int PLAYER_INV_SLOTS = PLAYER_INV_ROWS * PLAYER_INV_COLS; // 27
-    private static final int PLAYER_HOTBAR_SLOTS = 9;
+    public static final int PLAYER_INV_SLOTS = PLAYER_INV_ROWS * PLAYER_INV_COLS; // 27
+    public static final int PLAYER_HOTBAR_SLOTS = 9;
+    public static final int PLAYER_SLOTS = PLAYER_INV_SLOTS + PLAYER_HOTBAR_SLOTS;
+    public static final int PLAYER_START = MACHINE_SLOTS;
 
     private final ContainerData data;
 
@@ -39,7 +41,7 @@ public final class OxidizerMenu extends AbstractContainerMenu {
         this.data = data;
         addDataSlots(data);
 
-        // Machine slots — EXACT coords you provided
+        // Machine slots.
         this.addSlot(new SlotItemHandler(be.getInv(), IDX_INPUT_COPPER, 25, 46));
         this.addSlot(new SlotItemHandler(be.getInv(), IDX_INPUT_CHIP,   46, 46));
         this.addSlot(new SlotItemHandler(be.getInv(), IDX_INPUT_WAX,    68, 46));
@@ -66,10 +68,10 @@ public final class OxidizerMenu extends AbstractContainerMenu {
             ItemStack stack = slot.getItem();
             ret = stack.copy();
 
-            int playerEndEx = MACHINE_SLOTS + PLAYER_INV_SLOTS + PLAYER_HOTBAR_SLOTS; // 4..40
+            int playerEndEx = PLAYER_START + PLAYER_SLOTS; // 4..40
 
             if (index < MACHINE_SLOTS) {
-                if (!this.moveItemStackTo(stack, MACHINE_SLOTS, playerEndEx, true)) return ItemStack.EMPTY;
+                if (!this.moveItemStackTo(stack, PLAYER_START, playerEndEx, true)) return ItemStack.EMPTY;
                 slot.onQuickCraft(stack, ret);
             } else {
                 if (!this.moveItemStackTo(stack, IDX_INPUT_CHIP, IDX_INPUT_CHIP + 1, false))

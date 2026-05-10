@@ -27,8 +27,8 @@ public final class OxidizerBlockEntity extends BlockEntity implements net.minecr
         @Override protected void onContentsChanged(int slot){ setChanged(); }
         @Override public boolean isItemValid(int slot, @NotNull ItemStack stack){
             return switch (slot) {
-                case 0 -> isCopperBlock(stack);
-                case 1 -> isWaxPrecursor(stack);
+                case 0 -> OxidizerIngredients.isCopperInput(stack);
+                case 1 -> OxidizerIngredients.isWaxPrecursor(stack);
                 case 2 -> stack.getItem() instanceof StageChipItem;
                 default -> false;
             };
@@ -143,26 +143,14 @@ public final class OxidizerBlockEntity extends BlockEntity implements net.minecr
 
     public OxidizerBlockEntity(BlockPos pos, BlockState state){ super(ModContent.OXIDIZER_BE.get(), pos, state); }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, OxidizerBlockEntity be){
-        OxidizerSTick.tick(level, pos, state, be);
-    }
-
-    private static boolean isCopperBlock(ItemStack s){
-        // Accept BOTH unwaxed and waxed copper items in the input slot
-        return s.is(MCOxTags.COPPER_INPUTS) || s.is(MCOxTags.WAXED_COPPER_INPUTS);
-    }
-
-    private static boolean isWaxPrecursor(ItemStack s){
-        if (s.isEmpty()) return false;
-        if (ModConfigs.ALLOW_HONEYCOMB.get() && s.is(net.minecraft.world.item.Items.HONEYCOMB)) return true;
-        return ModConfigs.ALLOW_OIL_TAG.get() && s.is(MCOxTags.WAX_PRECURSORS);
+    public static void serverTick(Level level, BlockPos pos, BlockState state, OxidizerBlockEntity be) {
+        OxidizerServerTicker.tick(level, pos, state, be);
     }
 
     public IEnergyStorage getEnergy(){ return energy; }
     public ItemStackHandler getInv(){ return inv; }
     public ContainerData getData(){ return data; }
     public IItemHandler getItemHandlerForSide(@Nullable Direction side) {
-        // Allow pipes/hoppers to insert (0/1) and extract (3) from ANY side.
         return itemIOAnySideHandler;
     }
 

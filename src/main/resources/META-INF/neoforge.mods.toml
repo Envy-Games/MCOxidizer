@@ -1,24 +1,31 @@
 modLoader="javafml"
-loaderVersion="[4,)" # NeoForge loader range for 1.21.1
-license="MIT"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
 
 [[mods]]
-modId="mcooxidizer"                 # must match @Mod id in code
-version="0.1.0"                     # whatever version you want
-displayName="MCOxidizer"
-authors="StyEnvy"
-description='''A power-driven copper oxidizer machine that uses chips and energy to advance copper block oxidation.'''
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
 
-[[dependencies.mcooxidizer]]
+[[dependencies.${mod_id}]]
 modId="neoforge"
 type="required"
-versionRange="[21,)"                # requires NeoForge 21.x
+versionRange="${neo_version_range}"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.mcooxidizer]]
+[[dependencies.${mod_id}]]
 modId="minecraft"
 type="required"
-versionRange="[1.21.1,1.22)"        # supports 1.21.1 until 1.22
+versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="jei"
+type="optional"
+versionRange="${jei_version_range}"
+ordering="AFTER"
+side="CLIENT"

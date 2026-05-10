@@ -18,6 +18,11 @@ public final class OxidizerScreen extends AbstractContainerScreen<OxidizerMenu> 
     private static final int OUT_X   = 135, OUT_Y  = 46;
     private static final int FE_X    = 158, FE_Y   = 15;
 
+    public static final int JEI_CLICK_X = 86;
+    public static final int JEI_CLICK_Y = 41;
+    public static final int JEI_CLICK_W = 48;
+    public static final int JEI_CLICK_H = 28;
+
     // Slot geometry (for centering the arrow)
     private static final int SLOT_W = 18, SLOT_H = 18;
     private static final int SLOT3_X = 66, SLOT3_Y = 46; // third input
@@ -79,7 +84,7 @@ public final class OxidizerScreen extends AbstractContainerScreen<OxidizerMenu> 
         renderTooltip(g, mx, my);
     }
 
-    // Draws a horizontal progress arrow (left → right)
+    // Draws a horizontal progress arrow from left to right.
     private static void drawProgressArrow(GuiGraphics g, int x, int y, int w, int h, float progress) {
         progress = Math.max(0f, Math.min(1f, progress));
         if (w <= 4 || h <= 3) return;

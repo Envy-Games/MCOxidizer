@@ -1,28 +1,25 @@
-MCOxidizer Installation Instructions
-=======
-
-
-Neoforge Template Installation information
-=======
-
-The Neoforge Version 21.1.203 for Minecraft Version 1.21.1 template repository used to create this mod can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
-
-Once you have your clone, simply open the repository in the IDE of your choice. We recommend IntelliJ IDEA Community.
-
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
-
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
-
-Additional Resources: 
+MCOxidizer
 ==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+
+MCOxidizer adds an energy-powered Oxidizer machine for converting copper blocks and variants to exposed, weathered, or oxidized forms. Waxed inputs stay waxed, and unwaxed inputs can be waxed during processing with honeycomb or items from the configured wax precursor tag.
+
+Development
+===========
+
+This project targets Minecraft 1.21.1 on NeoForge 21.1.x and uses Java 21.
+
+Useful commands:
+
+```
+gradlew build
+gradlew runClient
+gradlew runData
+```
+
+JEI support is optional for users. The JEI API is compile-only, and the full JEI jar is added only to the local runtime configuration for development testing.
+
+Resources
+=========
+
+NeoForge documentation: https://docs.neoforged.net/
+NeoForge project files: https://projects.neoforged.net/neoforged/neoforge
