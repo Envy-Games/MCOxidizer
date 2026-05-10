@@ -2,6 +2,7 @@ package com.styenvy.mcooxidizer;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public final class OxidizerIngredients {
     private OxidizerIngredients() {}
@@ -25,6 +26,7 @@ public final class OxidizerIngredients {
     }
 
     public static boolean hasWaxPrecursorOption() {
-        return ModConfigs.ALLOW_HONEYCOMB.get() || ModConfigs.ALLOW_OIL_TAG.get();
+        return ModConfigs.ALLOW_HONEYCOMB.get()
+                || (ModConfigs.ALLOW_OIL_TAG.get() && !Ingredient.of(MCOxTags.WAX_PRECURSORS).isEmpty());
     }
 }

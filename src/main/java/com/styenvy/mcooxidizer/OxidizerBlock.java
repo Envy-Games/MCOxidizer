@@ -2,6 +2,7 @@ package com.styenvy.mcooxidizer;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -36,6 +37,27 @@ public final class OxidizerBlock extends Block implements EntityBlock {
                 OxidizerBlockEntity.serverTick(lvl, pos, st, e);
             }
         };
+    }
+
+    @Override
+    protected void onRemove(@NotNull BlockState state,
+                            @NotNull Level level,
+                            @NotNull BlockPos pos,
+                            @NotNull BlockState newState,
+                            boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (!level.isClientSide && be instanceof OxidizerBlockEntity oxidizer) {
+                for (int slot = 0; slot < OxidizerBlockEntity.SLOT_COUNT; slot++) {
+                    ItemStack stack = oxidizer.getInv().getStackInSlot(slot);
+                    if (!stack.isEmpty()) {
+                        Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
+                        oxidizer.getInv().setStackInSlot(slot, ItemStack.EMPTY);
+                    }
+                }
+            }
+        }
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     // 1.21.1: open GUI when empty-handed interaction

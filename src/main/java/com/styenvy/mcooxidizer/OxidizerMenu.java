@@ -4,6 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -11,13 +12,13 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public final class OxidizerMenu extends AbstractContainerMenu {
-    // Indices
+    // Container slot indices.
     public static final int IDX_INPUT_COPPER = 0; // (25,46)
     public static final int IDX_INPUT_CHIP   = 1; // (46,46)
     public static final int IDX_INPUT_WAX    = 2; // (68,46)
     public static final int IDX_OUTPUT       = 3; // (135,46)
 
-    public static final int MACHINE_SLOTS = 4;
+    public static final int MACHINE_SLOTS = OxidizerBlockEntity.SLOT_COUNT;
 
     private static final int PLAYER_INV_ROWS = 3, PLAYER_INV_COLS = 9;
     public static final int PLAYER_INV_SLOTS = PLAYER_INV_ROWS * PLAYER_INV_COLS; // 27
@@ -26,6 +27,7 @@ public final class OxidizerMenu extends AbstractContainerMenu {
     public static final int PLAYER_START = MACHINE_SLOTS;
 
     private final ContainerData data;
+    private final ContainerLevelAccess access;
 
     public static OxidizerMenu fromNetwork(int id, Inventory inv, FriendlyByteBuf buf) {
         var pos = buf.readBlockPos();
@@ -33,19 +35,22 @@ public final class OxidizerMenu extends AbstractContainerMenu {
         if (be == null) throw new IllegalStateException("Oxidizer BE missing at " + pos);
 
         // Use a fresh client-side data container; server will populate it via addDataSlots()
-        return new OxidizerMenu(id, inv, be, new net.minecraft.world.inventory.SimpleContainerData(4));
+        return new OxidizerMenu(id, inv, be, new net.minecraft.world.inventory.SimpleContainerData(OxidizerBlockEntity.DATA_COUNT));
     }
 
     public OxidizerMenu(int id, Inventory playerInv, OxidizerBlockEntity be, ContainerData data) {
         super(ModContent.OXIDIZER_MENU.get(), id);
         this.data = data;
+        this.access = be.getLevel() == null
+                ? ContainerLevelAccess.NULL
+                : ContainerLevelAccess.create(be.getLevel(), be.getBlockPos());
         addDataSlots(data);
 
         // Machine slots.
-        this.addSlot(new SlotItemHandler(be.getInv(), IDX_INPUT_COPPER, 25, 46));
-        this.addSlot(new SlotItemHandler(be.getInv(), IDX_INPUT_CHIP,   46, 46));
-        this.addSlot(new SlotItemHandler(be.getInv(), IDX_INPUT_WAX,    68, 46));
-        this.addSlot(new SlotItemHandler(be.getInv(), IDX_OUTPUT,      135, 46) {
+        this.addSlot(new SlotItemHandler(be.getInv(), OxidizerBlockEntity.SLOT_INPUT_COPPER, 25, 46));
+        this.addSlot(new SlotItemHandler(be.getInv(), OxidizerBlockEntity.SLOT_INPUT_CHIP,   46, 46));
+        this.addSlot(new SlotItemHandler(be.getInv(), OxidizerBlockEntity.SLOT_INPUT_WAX,    68, 46));
+        this.addSlot(new SlotItemHandler(be.getInv(), OxidizerBlockEntity.SLOT_OUTPUT,      135, 46) {
             @Override public boolean mayPlace(@NotNull ItemStack s) { return false; }
         });
 
@@ -58,7 +63,10 @@ public final class OxidizerMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInv, h, 8 + h * 18, 142));
     }
 
-    @Override public boolean stillValid(@NotNull Player p) { return true; }
+    @Override
+    public boolean stillValid(@NotNull Player player) {
+        return stillValid(access, player, ModContent.OXIDIZER_BLOCK.get());
+    }
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {

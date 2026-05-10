@@ -15,8 +15,8 @@ public final class OxidizerServerTicker {
         ItemStackHandler inv = be.getInv();
         IEnergyStorage energy = be.getEnergy();
 
-        ItemStack input = inv.getStackInSlot(0);
-        ItemStack chip = inv.getStackInSlot(2);
+        ItemStack input = inv.getStackInSlot(OxidizerBlockEntity.SLOT_INPUT_COPPER);
+        ItemStack chip = inv.getStackInSlot(OxidizerBlockEntity.SLOT_INPUT_CHIP);
         StageChipItem.Stage target = StageChipItem.fromStack(chip);
 
         if (input.isEmpty() || !OxidizerIngredients.isCopperInput(input) || target == null) {
@@ -25,7 +25,7 @@ public final class OxidizerServerTicker {
         }
 
         boolean wantWaxed = OxidizerIngredients.isWaxedCopperInput(input)
-                || OxidizerIngredients.isWaxPrecursor(inv.getStackInSlot(1));
+                || OxidizerIngredients.isWaxPrecursor(inv.getStackInSlot(OxidizerBlockEntity.SLOT_INPUT_WAX));
         ItemStack result = CopperTransform.compute(input, target, wantWaxed);
 
         if (result.isEmpty() || !canOutput(inv, result)) {
@@ -46,11 +46,11 @@ public final class OxidizerServerTicker {
 
         if (progress >= maxProgress) {
             boolean consumeWax = !OxidizerIngredients.isWaxedCopperInput(input)
-                    && OxidizerIngredients.isWaxPrecursor(inv.getStackInSlot(1));
+                    && OxidizerIngredients.isWaxPrecursor(inv.getStackInSlot(OxidizerBlockEntity.SLOT_INPUT_WAX));
 
             input.shrink(1);
             if (consumeWax) {
-                inv.extractItem(1, 1, false);
+                inv.extractItem(OxidizerBlockEntity.SLOT_INPUT_WAX, 1, false);
             }
 
             insertOutput(inv, result);
@@ -66,7 +66,7 @@ public final class OxidizerServerTicker {
     }
 
     private static boolean canOutput(ItemStackHandler inv, ItemStack stack) {
-        ItemStack current = inv.getStackInSlot(3);
+        ItemStack current = inv.getStackInSlot(OxidizerBlockEntity.SLOT_OUTPUT);
         if (current.isEmpty()) {
             return true;
         }
@@ -77,12 +77,12 @@ public final class OxidizerServerTicker {
     }
 
     private static void insertOutput(ItemStackHandler inv, ItemStack stack) {
-        ItemStack current = inv.getStackInSlot(3);
+        ItemStack current = inv.getStackInSlot(OxidizerBlockEntity.SLOT_OUTPUT);
         if (current.isEmpty()) {
-            inv.setStackInSlot(3, stack.copy());
+            inv.setStackInSlot(OxidizerBlockEntity.SLOT_OUTPUT, stack.copy());
         } else {
             current.grow(stack.getCount());
-            inv.setStackInSlot(3, current);
+            inv.setStackInSlot(OxidizerBlockEntity.SLOT_OUTPUT, current);
         }
     }
 }

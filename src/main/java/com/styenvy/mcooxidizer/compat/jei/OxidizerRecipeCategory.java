@@ -83,7 +83,10 @@ public final class OxidizerRecipeCategory implements IRecipeCategory<OxidizerJei
             waxSlot.addItemStack(new ItemStack(Items.HONEYCOMB));
         }
         if (ModConfigs.ALLOW_OIL_TAG.get()) {
-            waxSlot.addIngredients(Ingredient.of(MCOxTags.WAX_PRECURSORS));
+            Ingredient waxPrecursors = Ingredient.of(MCOxTags.WAX_PRECURSORS);
+            if (!waxPrecursors.isEmpty()) {
+                waxSlot.addIngredients(waxPrecursors);
+            }
         }
     }
 

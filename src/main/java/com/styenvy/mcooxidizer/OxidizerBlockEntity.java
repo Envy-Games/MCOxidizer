@@ -23,13 +23,20 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public final class OxidizerBlockEntity extends BlockEntity implements net.minecraft.world.MenuProvider {
-    private final ItemStackHandler inv = new ItemStackHandler(4) {
+    public static final int SLOT_INPUT_COPPER = 0;
+    public static final int SLOT_INPUT_WAX = 1;
+    public static final int SLOT_INPUT_CHIP = 2;
+    public static final int SLOT_OUTPUT = 3;
+    public static final int SLOT_COUNT = 4;
+    public static final int DATA_COUNT = 4;
+
+    private final ItemStackHandler inv = new ItemStackHandler(SLOT_COUNT) {
         @Override protected void onContentsChanged(int slot){ setChanged(); }
         @Override public boolean isItemValid(int slot, @NotNull ItemStack stack){
             return switch (slot) {
-                case 0 -> OxidizerIngredients.isCopperInput(stack);
-                case 1 -> OxidizerIngredients.isWaxPrecursor(stack);
-                case 2 -> stack.getItem() instanceof StageChipItem;
+                case SLOT_INPUT_COPPER -> OxidizerIngredients.isCopperInput(stack);
+                case SLOT_INPUT_WAX -> OxidizerIngredients.isWaxPrecursor(stack);
+                case SLOT_INPUT_CHIP -> stack.getItem() instanceof StageChipItem;
                 default -> false;
             };
         }
@@ -82,7 +89,7 @@ public final class OxidizerBlockEntity extends BlockEntity implements net.minecr
     private int progress = 0;
     private int maxProgress = ModConfigs.PROCESS_TICKS.get();
 
-    private final ContainerData data = new SimpleContainerData(4) {
+    private final ContainerData data = new SimpleContainerData(DATA_COUNT) {
         @Override public int get(int i){
             return switch (i){
                 case 0 -> progress;
@@ -96,20 +103,18 @@ public final class OxidizerBlockEntity extends BlockEntity implements net.minecr
             if (i==0) progress=v;
             else if (i==1) maxProgress=v;
         }
-        @Override public int getCount(){ return 4; }
+        @Override public int getCount(){ return DATA_COUNT; }
     };
 
     private final IItemHandler itemIOAnySideHandler = new IItemHandler() {
-        @Override public int getSlots() { return 4; }
+        @Override public int getSlots() { return SLOT_COUNT; }
 
         @Override public @NotNull ItemStack getStackInSlot(int slot) {
             return inv.getStackInSlot(slot);
         }
 
         @Override public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-            // Allow insertion ONLY into copper (slot 0) and wax (slot 1).
-            // Deny insertion into chip (slot 2) and output (slot 3).
-            if (slot == 0 || slot == 1) {
+            if (slot == SLOT_INPUT_COPPER || slot == SLOT_INPUT_WAX) {
                 if (!inv.isItemValid(slot, stack)) return stack;
                 return inv.insertItem(slot, stack, simulate);
             }
@@ -117,9 +122,8 @@ public final class OxidizerBlockEntity extends BlockEntity implements net.minecr
         }
 
         @Override public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-            // Allow extraction ONLY from output (slot 3).
-            if (slot == 3) {
-                return inv.extractItem(3, amount, simulate);
+            if (slot == SLOT_OUTPUT) {
+                return inv.extractItem(SLOT_OUTPUT, amount, simulate);
             }
             return ItemStack.EMPTY;
         }
@@ -127,8 +131,7 @@ public final class OxidizerBlockEntity extends BlockEntity implements net.minecr
         @Override public int getSlotLimit(int slot) { return inv.getSlotLimit(slot); }
 
         @Override public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            // For automation queries: only 0/1 are valid insertion targets.
-            return (slot == 0 || slot == 1) && inv.isItemValid(slot, stack);
+            return (slot == SLOT_INPUT_COPPER || slot == SLOT_INPUT_WAX) && inv.isItemValid(slot, stack);
         }
     };
 
