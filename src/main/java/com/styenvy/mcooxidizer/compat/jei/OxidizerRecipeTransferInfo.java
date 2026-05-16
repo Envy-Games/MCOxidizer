@@ -35,11 +35,12 @@ public final class OxidizerRecipeTransferInfo implements IRecipeTransferInfo<Oxi
 
     @Override
     public @NotNull List<Slot> getRecipeSlots(@NotNull OxidizerMenu container, @NotNull OxidizerJeiRecipe recipe) {
+        int lane = chooseLane(container, recipe);
         List<Slot> recipeSlots = new ArrayList<>();
-        recipeSlots.add(container.slots.get(OxidizerMenu.IDX_INPUT_COPPER));
-        recipeSlots.add(container.slots.get(OxidizerMenu.IDX_INPUT_CHIP));
+        recipeSlots.add(container.slots.get(OxidizerMenu.copperIndex(lane)));
+        recipeSlots.add(container.slots.get(OxidizerMenu.chipIndex(lane)));
         if (recipe.usesWax()) {
-            recipeSlots.add(container.slots.get(OxidizerMenu.IDX_INPUT_WAX));
+            recipeSlots.add(container.slots.get(OxidizerMenu.waxIndex(lane)));
         }
         return recipeSlots;
     }
@@ -54,5 +55,16 @@ public final class OxidizerRecipeTransferInfo implements IRecipeTransferInfo<Oxi
     @Override
     public boolean requireCompleteSets(@NotNull OxidizerMenu container, @NotNull OxidizerJeiRecipe recipe) {
         return true;
+    }
+
+    private static int chooseLane(OxidizerMenu container, OxidizerJeiRecipe recipe) {
+        for (int lane = 0; lane < OxidizerMenu.LANE_COUNT; lane++) {
+            if (!container.slots.get(OxidizerMenu.copperIndex(lane)).hasItem()
+                    && !container.slots.get(OxidizerMenu.chipIndex(lane)).hasItem()
+                    && (!recipe.usesWax() || !container.slots.get(OxidizerMenu.waxIndex(lane)).hasItem())) {
+                return lane;
+            }
+        }
+        return 0;
     }
 }

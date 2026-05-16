@@ -34,7 +34,7 @@ public final class MCOxidizerJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ModContent.OXIDIZER_ITEM.get(), OxidizerRecipeCategory.TYPE);
+        registration.addRecipeCatalysts(OxidizerRecipeCategory.TYPE, ModContent.OXIDIZER_BLOCK.get());
     }
 
     @Override

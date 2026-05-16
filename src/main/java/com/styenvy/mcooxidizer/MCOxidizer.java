@@ -10,8 +10,9 @@ public final class MCOxidizer {
 
     public MCOxidizer(IEventBus modBus, ModContainer container) {
         ModContent.init(modBus);
+        ModCreative.init(modBus);
         ModConfigs.register(container);
-        modBus.addListener(ModCreative::addToTabs);
+        modBus.addListener(ModDataGenerators::gatherData);
         modBus.addListener(ModCapabilities::register);
     }
 }

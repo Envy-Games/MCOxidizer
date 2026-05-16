@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -27,7 +28,8 @@ public final class ModContent {
             () -> new OxidizerBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
                     .strength(3.5F)
-                    .requiresCorrectToolForDrops())
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion())
     );
 
     public static final DeferredHolder<Item, BlockItem> OXIDIZER_ITEM = ITEMS.register(
@@ -54,9 +56,7 @@ public final class ModContent {
 
     public static final DeferredHolder<MenuType<?>, MenuType<OxidizerMenu>> OXIDIZER_MENU =
             MENUS.register("oxidizer",
-                    () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(
-                            OxidizerMenu::fromNetwork
-                    ));
+                    () -> new MenuType<>(OxidizerMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
     public static void init(IEventBus bus) {
         BLOCKS.register(bus);

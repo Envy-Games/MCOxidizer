@@ -1,15 +1,18 @@
 package com.styenvy.mcooxidizer.compat.jei;
 
 import com.styenvy.mcooxidizer.CopperTransform;
+import com.styenvy.mcooxidizer.MCOxidizer;
 import com.styenvy.mcooxidizer.ModContent;
 import com.styenvy.mcooxidizer.OxidizerIngredients;
 import com.styenvy.mcooxidizer.StageChipItem;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public record OxidizerJeiRecipe(ItemStack input, ItemStack chip, boolean usesWax, ItemStack output) {
+public record OxidizerJeiRecipe(ResourceLocation id, ItemStack input, ItemStack chip, boolean usesWax, ItemStack output) {
     public OxidizerJeiRecipe {
         input = input.copy();
         chip = chip.copy();
@@ -45,7 +48,7 @@ public record OxidizerJeiRecipe(ItemStack input, ItemStack chip, boolean usesWax
         if (output.isEmpty() || ItemStack.isSameItemSameComponents(input, output)) {
             return;
         }
-        recipes.add(new OxidizerJeiRecipe(input, chip, usesWax, output));
+        recipes.add(new OxidizerJeiRecipe(idFor(input, chip, usesWax, output), input, chip, usesWax, output));
     }
 
     private static ItemStack chipFor(StageChipItem.Stage stage) {
@@ -54,5 +57,22 @@ public record OxidizerJeiRecipe(ItemStack input, ItemStack chip, boolean usesWax
             case WEATHERED -> new ItemStack(ModContent.CHIP_WEATHERED.get());
             case OXIDIZED -> new ItemStack(ModContent.CHIP_OXIDIZED.get());
         };
+    }
+
+    private static ResourceLocation idFor(ItemStack input, ItemStack chip, boolean usesWax, ItemStack output) {
+        return ResourceLocation.fromNamespaceAndPath(
+                MCOxidizer.MOD_ID,
+                "oxidizing/"
+                        + itemPath(input)
+                        + "_with_"
+                        + itemPath(chip)
+                        + (usesWax ? "_and_wax" : "")
+                        + "_to_"
+                        + itemPath(output)
+        );
+    }
+
+    private static String itemPath(ItemStack stack) {
+        return BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath();
     }
 }

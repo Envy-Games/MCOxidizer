@@ -68,14 +68,25 @@ public final class OxidizerRecipeCategory implements IRecipeCategory<OxidizerJei
     @Override
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull OxidizerJeiRecipe recipe, @NotNull IFocusGroup focuses) {
         int inputX = recipe.usesWax() ? 1 : 14;
-        builder.addInputSlot(inputX, SLOT_Y).setSlotName("copper").addItemStack(recipe.input());
-        builder.addInputSlot(inputX + 25, SLOT_Y).setSlotName("chip").addItemStack(recipe.chip());
+        builder.addInputSlot(inputX, SLOT_Y)
+                .setSlotName("copper")
+                .setStandardSlotBackground()
+                .addItemStack(recipe.input());
+        builder.addInputSlot(inputX + 25, SLOT_Y)
+                .setSlotName("chip")
+                .setStandardSlotBackground()
+                .addItemStack(recipe.chip());
 
         if (recipe.usesWax()) {
-            addWaxSlot(builder.addInputSlot(inputX + 50, SLOT_Y).setSlotName("wax"));
+            addWaxSlot(builder.addInputSlot(inputX + 50, SLOT_Y)
+                    .setSlotName("wax")
+                    .setStandardSlotBackground());
         }
 
-        builder.addOutputSlot(104, SLOT_Y).setSlotName("output").addItemStack(recipe.output());
+        builder.addOutputSlot(104, SLOT_Y)
+                .setSlotName("output")
+                .setOutputSlotBackground()
+                .addItemStack(recipe.output());
     }
 
     private static void addWaxSlot(IRecipeSlotBuilder waxSlot) {
@@ -107,5 +118,10 @@ public final class OxidizerRecipeCategory implements IRecipeCategory<OxidizerJei
             plus.draw(guiGraphics, 33, plusY);
             arrow.draw(guiGraphics, 70, SLOT_Y + 1);
         }
+    }
+
+    @Override
+    public ResourceLocation getRegistryName(@NotNull OxidizerJeiRecipe recipe) {
+        return recipe.id();
     }
 }

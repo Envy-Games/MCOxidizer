@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "mcooxidizer:block/oxidizer" }
+    "facing=north": { "model": "mcooxidizer:block/oxidizer" },
+    "facing=east": { "model": "mcooxidizer:block/oxidizer", "y": 90 },
+    "facing=south": { "model": "mcooxidizer:block/oxidizer", "y": 180 },
+    "facing=west": { "model": "mcooxidizer:block/oxidizer", "y": 270 }
   }
 }
